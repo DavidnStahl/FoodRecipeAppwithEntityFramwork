@@ -64,15 +64,19 @@ namespace inlam1.entityFramwork_gorom
 
         private void lstBoxRecipe_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cBoxCategoriesNewAddDelete.Items.Clear();
-            var dbm = new DBmanager();
-            var recipe = dbm.GetSelectedRecipe(lstBoxRecipe.SelectedItem.ToString());
-            tBoxTitle.Text = recipe.Titel.ToString();
-            richTextDescription.Text = recipe.Beskrivning.ToString();
-            richTextIngrediens.Text = recipe.Ingredienser.ToString();
-            FillComboBox();
-            var selectedCategory = dbm.GetSelectedCategory(lstBoxRecipe.SelectedItem.ToString());
-            cBoxCategoriesNewAddDelete.SelectedItem = selectedCategory.KategoriBeskrivning.ToString();
+            if(lstBoxRecipe.SelectedIndex > -1)
+            {
+                cBoxCategoriesNewAddDelete.Items.Clear();
+                var dbm = new DBmanager();
+                var recipe = dbm.GetSelectedRecipe(lstBoxRecipe.SelectedItem.ToString());
+                tBoxTitle.Text = recipe.Titel.ToString();
+                richTextDescription.Text = recipe.Beskrivning.ToString();
+                richTextIngrediens.Text = recipe.Ingredienser.ToString();
+                FillComboBox();
+                var selectedCategory = dbm.GetSelectedCategory(lstBoxRecipe.SelectedItem.ToString());
+                cBoxCategoriesNewAddDelete.SelectedItem = selectedCategory.KategoriBeskrivning.ToString();
+            }
+            
         }
         public void ResetTextBox()
         {
