@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MatReceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kategorier">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KategoriBeskrivning" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Recept">
+          <Key>
+            <PropertyRef Name="ReceptID" />
+          </Key>
+          <Property Name="ReceptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titel" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Beskrivning" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Ingredienser" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="kategoriID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Recept_Kategorier">
+          <End Role="Kategorier" Type="Self.Kategorier" Multiplicity="1" />
+          <End Role="Recept" Type="Self.Recept" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategorier">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Recept">
+              <PropertyRef Name="kategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MatReceptDBModelStoreContainer">
+          <EntitySet Name="Kategorier" EntityType="Self.Kategorier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recept" EntityType="Self.Recept" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Recept_Kategorier" Association="Self.FK_Recept_Kategorier">
+            <End Role="Kategorier" EntitySet="Kategorier" />
+            <End Role="Recept" EntitySet="Recept" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MatReceptDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kategorier">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KategoriBeskrivning" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Recepts" Relationship="Self.FK_Recept_Kategorier" FromRole="Kategorier" ToRole="Recept" />
+        </EntityType>
+        <EntityType Name="Recept">
+          <Key>
+            <PropertyRef Name="ReceptID" />
+          </Key>
+          <Property Name="ReceptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Beskrivning" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ingredienser" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="kategoriID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kategorier" Relationship="Self.FK_Recept_Kategorier" FromRole="Recept" ToRole="Kategorier" />
+        </EntityType>
+        <Association Name="FK_Recept_Kategorier">
+          <End Role="Kategorier" Type="Self.Kategorier" Multiplicity="1" />
+          <End Role="Recept" Type="Self.Recept" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategorier">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Recept">
+              <PropertyRef Name="kategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MatReceptDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kategoriers" EntityType="Self.Kategorier" />
+          <EntitySet Name="Recepts" EntityType="Self.Recept" />
+          <AssociationSet Name="FK_Recept_Kategorier" Association="Self.FK_Recept_Kategorier">
+            <End Role="Kategorier" EntitySet="Kategoriers" />
+            <End Role="Recept" EntitySet="Recepts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MatReceptDBModelStoreContainer" CdmEntityContainer="MatReceptDBEntities">
+          <EntitySetMapping Name="Kategoriers">
+            <EntityTypeMapping TypeName="MatReceptDBModel.Kategorier">
+              <MappingFragment StoreEntitySet="Kategorier">
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+                <ScalarProperty Name="KategoriBeskrivning" ColumnName="KategoriBeskrivning" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recepts">
+            <EntityTypeMapping TypeName="MatReceptDBModel.Recept">
+              <MappingFragment StoreEntitySet="Recept">
+                <ScalarProperty Name="ReceptID" ColumnName="ReceptID" />
+                <ScalarProperty Name="Titel" ColumnName="Titel" />
+                <ScalarProperty Name="Beskrivning" ColumnName="Beskrivning" />
+                <ScalarProperty Name="Ingredienser" ColumnName="Ingredienser" />
+                <ScalarProperty Name="kategoriID" ColumnName="kategoriID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
